@@ -5,17 +5,17 @@
 - look at someone's posts and profile.
 ---
 
-#### To install packages:
+#### To install packages run:
 ```
 npm install
 ```
 
-#### After that you need to add .env file and in there type your mongodb config:
+#### You need to add .env file and in there type your mongodb config:
 ```
 MONGODB_URI='<YOUR_MONGODB_CONFIG>'
 ```
 
-#### To run application on localhost:
+#### To run application on localhost run:
 ```
 npm run dev
 ```
