@@ -1,12 +1,12 @@
-import { FETCH_ALL, CREATE_POST } from "../../constants/actionTypes";
+import { GET_POSTS, CREATE_POST } from "../../constants/actionTypes";
 
-export default function authReducer(state = { authData: null }, action: any) {
+export default function authReducer(state = {}, action: any) {
     switch (action.type) {
-        case FETCH_ALL:
+        case GET_POSTS:
             return { ...state, postsData: action.data, error: action.error };
         // case CREATE_POST:
-        //     localStorage.clear();
-        //     return { ...state, authData: null, loading: false, error: null };
+        //     console.log("payload", action.payload)
+        //     return { ...state, postsData: { ...action.payload } };
         default:
             return state;
     }

@@ -27,40 +27,28 @@ const theme = createTheme({
 });
 
 const Navbar: NextPage = () => {
-    const userData = useSelector((state: any) => state.authReducer);
+    const userData = useSelector((state: any) => state.authReducer.authData);
     const router = useRouter();
     const dispatch = useDispatch();
-    const [user, setUser] = useState((typeof window !== 'undefined' && JSON.parse(localStorage.getItem('profile') || "{}")));
 
     const logout = useCallback(() => {
         localStorage.clear();
         dispatch({ type: LOGOUT });
 
-        // setModal(true);
-        // window.setTimeout(() => {
-        //     setModal(false);
-        // }, 1000);
-
         router.push("/signin");
     }, [dispatch, router]);
 
     useEffect(() => {
-        const profile: any = localStorage.getItem('profile');
-        setUser(JSON.parse(profile));
-    }, [userData]);
-
-    useEffect(() => {
-        const token = user?.token;
+        const token = userData?.token;
 
         if (token) {
             const decodedToken: any = decode(token);
 
             if (decodedToken.exp * 1000 < new Date().getTime()) {
                 logout();
-                // router.push("/signin");
             }
         }
-    }, [router.pathname, logout, user?.token]);
+    }, [router.pathname, logout, userData]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -79,9 +67,7 @@ const Navbar: NextPage = () => {
                     flexDirection: "row",
                     alignItems: "center",
                 }}>
-                    {/* <Typography variant="h5" sx={{ marginRight: "30px" }}><Link href="/">Home</Link></Typography>
-                    <Typography variant="h5" sx={{ marginRight: "30px" }}><Link href="/create-post">Create Post</Link></Typography> */}
-                    {!user || user === "{}" ?
+                    {!userData?.result ?
                         <Link href="/signin" passHref={true}><Button variant="contained" href="/signin" color="primary" className="signin-btn">Sign in</Button></Link> :
                         <Button variant="contained" color="primary" className="logout-btn" onClick={logout}>Log out</Button>
                     }

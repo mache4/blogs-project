@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
-    author: String,
+    author: {
+        email: String
+    },
     title: String,
     content: String,
     createdAt: {

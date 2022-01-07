@@ -1,20 +1,23 @@
 import type { NextPage } from 'next';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from "react";
+import Posts from '../components/posts';
 import Layout from '../components/layout';
-import { getPosts } from '../redux/actions/posts';
+import CreatePost from '../components/create-post';
+import { Button } from '@mui/material';
+import { ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
 
 const Home: NextPage = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [dispatch]);
+    const [createPost, setCreatePost] = useState(false);
 
     return (
         <Layout>
-            <div className="app" style={{ marginTop: "80px" }}>
-                <h1>AJDE PLS</h1>
+            <div className="home">
+                <CreatePost show={createPost} />
+                <Button
+                    color="secondary"
+                    onClick={() => setCreatePost(!createPost)}
+                    fullWidth >CREATE POST {createPost ? <ArrowDropUp /> : <ArrowDropDown />}</Button>
+                <Posts />
             </div>
         </Layout>
     );

@@ -3,4 +3,4 @@ export const REMOVE_ERRORS = "REMOVE_ERRORS";
 export const LOGOUT = "LOGOUT";
 
 export const CREATE_POST = "CREATE_POST";
-export const FETCH_ALL = "FETCH_ALL";
+export const GET_POSTS = "GET_POSTS";

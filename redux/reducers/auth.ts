@@ -1,6 +1,8 @@
 import { AUTH, LOGOUT, REMOVE_ERRORS } from "../../constants/actionTypes";
 
-export default function authReducer(state = { authData: null }, action: any) {
+export default function authReducer(state = {
+    authData: JSON.parse(typeof window !== 'undefined' && localStorage.getItem('profile') || '{}')
+}, action: any) {
     switch (action.type) {
         case AUTH:
             localStorage.setItem('profile', JSON.stringify({ ...action?.data }));
