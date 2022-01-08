@@ -1,5 +1,6 @@
-import * as React from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+import Head from "next/head";
+import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../redux/actions/auth";
 import { useRouter } from "next/router"
 
@@ -29,31 +30,65 @@ const theme = createTheme({
 export default function Signin() {
     const dispatch = useDispatch();
     const router = useRouter();
+    const errorData = useSelector((state: any) => state.authReducer.error);
+    const [error, setError] = useState("");
+
+    const emailRef = useRef<any>();
+    const passwordRef = useRef<any>();
+
+    useEffect(() => {
+        if (errorData || errorData !== "")
+            setError(errorData);
+        else
+            setError("");
+    }, [errorData]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        setError("");
+
+        if (!emailRef.current.value && !passwordRef.current.value)
+            return setError("Enter data");
+        if (!emailRef.current.value)
+            return setError("Enter email");
+        if (!passwordRef.current.value)
+            return setError("Enter password");
+        if (errorData || errorData !== "")
+            setError(errorData);
         dispatch(signin({
-            email: data.get("email"),
-            password: data.get("password"),
+            email: emailRef.current.value,
+            password: passwordRef.current.value
         }, router));
     };
 
     return (
         <Layout>
             <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs" sx={{ marginTop: "125px" }}>
+                <Container component="main" maxWidth="xs" sx={{
+                    display: "flex",
+                    height: "100vh",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
+                    <Head>
+                        <title>Blogs | Sign in</title>
+                    </Head>
                     <CssBaseline />
                     <Box sx={{
                         marginTop: 8,
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center"
+                        alignItems: "center",
+                        padding: "25px",
+                        backgroundColor: "#fff",
+                        borderRadius: "5px"
                     }}>
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><LockOutlinedIcon /></Avatar>
                         <Typography component="h1" variant="h5">Sign in</Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                            {error}
                             <TextField
+                                inputRef={emailRef}
                                 margin="normal"
                                 required
                                 fullWidth
@@ -63,6 +98,7 @@ export default function Signin() {
                                 autoComplete="email"
                                 autoFocus />
                             <TextField
+                                inputRef={passwordRef}
                                 margin="normal"
                                 required
                                 fullWidth

@@ -1,7 +1,8 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import Head from "next/head";
 import { signup } from "../redux/actions/auth";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Avatar, Button, TextField, Link, Grid, Box, Typography, Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -29,20 +30,48 @@ const theme = createTheme({
 export default function Signup() {
     const router = useRouter();
     const dispatch = useDispatch();
+    const errorData = useSelector((state: any) => state.authReducer.error);
+    const [error, setError] = useState("");
+
+    const firstNameRef = useRef<any>();
+    const lastNameRef = useRef<any>();
+    const emailRef = useRef<any>();
+    const passwordRef = useRef<any>();
+
+    useEffect(() => {
+        if (errorData || errorData !== "")
+            setError(errorData);
+        else
+            setError("");
+    }, [errorData]);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        setError("");
+
+        if (!emailRef.current.value && !passwordRef.current.value)
+            return setError("Enter data");
+        if (!emailRef.current.value)
+            return setError("Enter email");
+        if (!passwordRef.current.value)
+            return setError("Enter password");
+        if (errorData || errorData !== "")
+            setError(errorData);
         dispatch(signup({
-            email: data.get("email"),
-            password: data.get("password"),
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
         }, router));
     };
 
     return (
         <Layout>
             <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs" sx={{ marginTop: "125px" }}>
+                <Container component="main" maxWidth="xs" sx={{
+                    display: "flex",
+                    height: "100vh",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }}>
                     <CssBaseline />
                     <Box
                         sx={{
@@ -50,13 +79,21 @@ export default function Signup() {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "center",
+                            padding: "25px",
+                            backgroundColor: "#fff",
+                            borderRadius: "5px"
                         }}>
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><LockOutlinedIcon /></Avatar>
                         <Typography component="h1" variant="h5">Sign up</Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+                            {error}
+                            <Head>
+                                <title>Blogs | Sign up</title>
+                            </Head>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        inputRef={firstNameRef}
                                         autoComplete="given-name"
                                         name="firstName"
                                         required
@@ -67,6 +104,7 @@ export default function Signup() {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
+                                        inputRef={lastNameRef}
                                         required
                                         fullWidth
                                         id="lastName"
@@ -76,6 +114,7 @@ export default function Signup() {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        inputRef={emailRef}
                                         required
                                         fullWidth
                                         id="email"
@@ -85,6 +124,7 @@ export default function Signup() {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        inputRef={passwordRef}
                                         required
                                         fullWidth
                                         name="password"

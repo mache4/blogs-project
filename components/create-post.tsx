@@ -9,6 +9,7 @@ import { createPost } from "../redux/actions/posts";
 
 type Props = {
     show: boolean;
+    hide: any;
 }
 
 const theme = createTheme({
@@ -28,7 +29,7 @@ const theme = createTheme({
     }
 });
 
-const CreatePost: NextPage<Props> = ({ show }) => {
+const CreatePost: NextPage<Props> = ({ show, hide }) => {
     const pageRef = useRef<any>();
     const titleRef = useRef<any>();
     const contentRef = useRef<any>();
@@ -57,20 +58,24 @@ const CreatePost: NextPage<Props> = ({ show }) => {
 
         titleRef.current.value = "";
         contentRef.current.value = "";
+        hide();
     }
 
     return (
         <div className="create-post" ref={pageRef} style={{
-            height: show ? pageRef.current?.scrollHeight : 0
+            height: show ? pageRef.current?.scrollHeight : 0,
+            width: "100%",
+            backgroundColor: "#F3E5F5"
         }}>
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box sx={{
-                        marginTop: 4,
+                        margin: "15px",
                         display: "flex",
                         flexDirection: "column",
-                        alignItems: "center"
+                        alignItems: "center",
+                        padding: "25px"
                     }}>
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><DescriptionIcon /></Avatar>
                         <Typography component="h1" variant="h5">Create Post</Typography>

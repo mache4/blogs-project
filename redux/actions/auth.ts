@@ -12,13 +12,12 @@ API.interceptors.request.use((req: any) => {
 const signIn = (formData: any) => API.post('/signin', formData);
 const signUp = (formData: any) => API.post('/signup', formData);
 
-
-
 export const signin = (formData: any, router: any) => async (dispatch: any) => {
     try {
+        // ovde loading: true
         const { data } = await signIn(formData);
 
-        dispatch({ type: AUTH, data });
+        dispatch({ type: AUTH, data }); // dodati loading: false
     } catch (error: any) {
         return dispatch({ type: AUTH, error: error.response.data.message });
     }

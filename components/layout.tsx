@@ -1,27 +1,16 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import Navbar from './navbar';
 
 interface Props {
-    children: JSX.Element,
-    bgc?: string
+    children: JSX.Element
 };
 
-const Layout: NextPage<Props> = (props) => {
-    backgroundColor: ;
+const Layout: NextPage<Props> = ({ children }) => {
     return (
         <div className="layout">
-            <Head>
-                <title>Blogs</title>
-                {/* <style>{`
-                    body {
-                        background-color: ${props.bgc ? `#${props.bgc}` : '#B2DBFF'};
-                    }
-                `}</style> */}
-            </Head>
             <Navbar />
             <div className="content">
-                {props.children}
+                {children}
             </div>
         </div>
     );

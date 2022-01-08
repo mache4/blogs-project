@@ -5,6 +5,7 @@ import Post from './post';
 
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { Grid } from '@mui/material';
 
 export default function Posts() {
     const dispatch = useDispatch();
@@ -25,11 +26,10 @@ export default function Posts() {
                     content={post.content}
                     createdAt={post.createdAt} />
             )) : <Loader
-                type="Puff"
-                color="#ab47bc"
+                type="Oval"
+                color="#fff"
                 height={100}
                 width={100}
-                timeout={3000}
             />}
         </div>
     )
