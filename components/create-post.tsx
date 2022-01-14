@@ -6,6 +6,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../redux/actions/posts";
+import ErrorModal from './error-modal';
 
 type Props = {
     show: boolean;
@@ -36,6 +37,7 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
     const dispatch = useDispatch();
     const userInfo = useSelector((state: any) => state.authReducer.authData?.result);
     const [error, setError] = useState("");
+    const [modal, setModal] = useState(false);
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -48,12 +50,20 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
             return setError("Enter post content.");
         if (!userInfo?.email)
             return setError("You are not authenticated.");
+        if (titleRef.current.value.length > 70)
+            return setError("Title mustn't have more than 70 characters.");
+        if (contentRef.current.value.length > 2500)
+            return setError("Title mustn't have more than 2500 characters.");
         dispatch(createPost({
             author: {
-                email: userInfo.email
+                email: userInfo.email,
+                username: userInfo.username,
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName
             },
             title: titleRef.current.value,
-            content: contentRef.current.value
+            content: contentRef.current.value,
+            createdAt: new Date()
         }));
 
         titleRef.current.value = "";
@@ -80,7 +90,9 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><DescriptionIcon /></Avatar>
                         <Typography component="h1" variant="h5">Create Post</Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                            {error}
+                            <ErrorModal show={error && error !== "" ? true : false}>
+                                {error}
+                            </ErrorModal>
                             <TextField
                                 inputRef={titleRef}
                                 margin="normal"

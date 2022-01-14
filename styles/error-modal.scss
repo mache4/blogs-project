@@ -1,0 +1,11 @@
+.error-modal {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    border: 1px solid red;
+    background-color: #fff;
+    color: red;
+    padding: 15px 25px;
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+}

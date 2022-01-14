@@ -11,18 +11,21 @@ export default async function handler(req: any, res: any) {
 
     switch (method) {
         case "POST":
-            const { email, password } = req.body;
+            const { email, password, username, firstName, lastName, createdAt } = req.body;
 
             try {
-                const oldUser = await User.findOne({ email });
+                let oldUser = await User.findOne({ email });
 
-                if (oldUser) return res.status(400).json({ message: "User already exists" });
+                if (oldUser) return res.status(400).json({ message: "Email already exists" });
+
+                oldUser = await User.findOne({ username });
+                if (oldUser) return res.status(400).json({ message: "Username is already taken" });
 
                 const hashedPassword = await bcrypt.hash(password, 12);
 
-                const result = await User.create({ email, password: hashedPassword });
+                const result = await User.create({ firstName, lastName, email, username, password: hashedPassword, createdAt });
 
-                const token = jwt.sign({ email: result.email, id: result._id }, secret, { expiresIn: "2h" });
+                const token = jwt.sign({ email: result.email, id: result._id, firstName: result.firstName, lastName: result.lastName }, secret, { expiresIn: "2h" });
 
                 res.status(201).json({ result, token });
             } catch (error) {

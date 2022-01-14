@@ -8,10 +8,10 @@ export default async function handler(req: any, res: any) {
 
     switch (method) {
         case "POST":
-            const { author, title, content } = req.body;
+            const { author, title, content, createdAt } = req.body;
 
             try {
-                const result = await Post.create({ author, title, content });
+                const result = await Post.create({ author, title, content, createdAt });
                 res.status(201).json({ result });
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong" });

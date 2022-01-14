@@ -10,11 +10,11 @@ API.interceptors.request.use((req: any) => {
 });
 
 const posts = () => API.get("/posts");
-const post = (formData: any) => API.post("/post", formData);
+const post = (postData: any) => API.post("/post", postData);
 
-export const createPost = (formData: any) => async (dispatch: any) => {
+export const createPost = (postData: any) => async (dispatch: any) => {
     try {
-        const { data } = await post(formData);
+        const { data } = await post(postData);
         dispatch({ type: CREATE_POST, payload: data });
     } catch (error: any) {
         return dispatch({ type: CREATE_POST, error: error.response.data.message });

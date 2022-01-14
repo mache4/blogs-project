@@ -36,6 +36,7 @@ export default function Signup() {
     const firstNameRef = useRef<any>();
     const lastNameRef = useRef<any>();
     const emailRef = useRef<any>();
+    const usernameRef = useRef<any>();
     const passwordRef = useRef<any>();
 
     useEffect(() => {
@@ -45,21 +46,36 @@ export default function Signup() {
             setError("");
     }, [errorData]);
 
+    const validateEmail = (email: any) => {
+        const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        if (email.match(validRegex))
+            return true;
+        return false;
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError("");
 
-        if (!emailRef.current.value && !passwordRef.current.value)
+        if (!emailRef.current.value || !passwordRef.current.value || !firstNameRef.current.value || !lastNameRef.current.value || !usernameRef.current.value)
             return setError("Enter data");
-        if (!emailRef.current.value)
-            return setError("Enter email");
-        if (!passwordRef.current.value)
-            return setError("Enter password");
+        if (!validateEmail(emailRef.current.value))
+            return setError("Email is not valid");
+        if (passwordRef.current.value.length < 8)
+            return setError("Password must have at least 8 characters.");
+        if (usernameRef.current.value.length < 4)
+            return setError("Username must have at least 4 characters.");
+        if (usernameRef.current.value.length > 16)
+            return setError("Username mustn't have more than 16 characters.");
         if (errorData || errorData !== "")
             setError(errorData);
         dispatch(signup({
+            firstName: firstNameRef.current.value,
+            lastName: lastNameRef.current.value,
+            username: usernameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
+            createdAt: new Date()
         }, router));
     };
 
@@ -121,6 +137,16 @@ export default function Signup() {
                                         label="Email Address"
                                         name="email"
                                         autoComplete="email" />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        inputRef={usernameRef}
+                                        required
+                                        fullWidth
+                                        id="username"
+                                        label="Username"
+                                        name="username"
+                                        autoComplete="username" />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField

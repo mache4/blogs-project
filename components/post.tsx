@@ -4,7 +4,8 @@ import { Typography } from '@mui/material';
 
 type Props = {
     author: {
-        email: string
+        email: string,
+        username: string
     },
     title: string,
     content: string,
@@ -29,7 +30,7 @@ const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
     return (
         <div className="post">
             <Typography variant="h4" className="post-title">{title}</Typography>
-            <Typography variant="h6" className="post-author">{author.email}</Typography>
+            <Typography variant="h6" className="post-author">@{author.username}</Typography>
             <Typography variant="h5" className="post-content">{content.length > 225 ? content.substring(0, 225) + "..." : content}</Typography>
             <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
             {console.log(new Date())}

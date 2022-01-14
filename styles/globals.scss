@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=WindSong:wght@500&display=swap');
 
 * {
+    box-sizing: border-box;
     padding: 0;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -10,18 +11,10 @@
 
 body {
     background-image: url("/background.jpg");
-    height: 100%;
-    width: 100%;
-    // background-repeat: no-repeat;
-    background-position: 50% 50%;
     background-attachment: fixed;
 }
 
 a {
     color: inherit;
     text-decoration: none;
-}
-
-* {
-    box-sizing: border-box;
 }
