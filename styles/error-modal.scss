@@ -1,11 +1,18 @@
 .error-modal {
+    display: flex;
+    align-items: center;
     position: fixed;
     bottom: 25px;
     right: 25px;
-    border: 1px solid red;
-    background-color: #fff;
-    color: red;
+    border: 1px solid #A80E18;
+    border-radius: 5px;
+    background-color: #f8e8e9;
+    color: #A80E18;
     padding: 15px 25px;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     transition: transform 0.3s ease;
+
+    .error {
+        margin-left: 10px;
+    }
 }

@@ -1,18 +1,23 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { Typography } from '@mui/material';
 
 type Props = {
     author: {
         email: string,
-        username: string
+        username: string,
+        _id: string
     },
+    id: string,
     title: string,
     content: string,
     createdAt: any
 }
 
-const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
+const Post: NextPage<Props> = ({ id, author, title, content, createdAt }) => {
+    const router = useRouter();
+
     const fun = (number: any) => {
         if (number < 10)
             number = '0' + number;
@@ -20,7 +25,6 @@ const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
     }
 
     let date = new Date(createdAt);
-    let seconds = fun(date.getSeconds());
     let minutes = fun(date.getMinutes());
     let hours = fun(date.getHours());
     let day = fun(date.getDate());
@@ -29,11 +33,10 @@ const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
 
     return (
         <div className="post">
-            <Typography variant="h4" className="post-title">{title}</Typography>
-            <Typography variant="h6" className="post-author">@{author.username}</Typography>
+            <Typography variant="h4" className="post-title" onClick={() => router.push(`/p/${id}`)}>{title}</Typography>
+            <Typography variant="h6" className="post-author" onClick={() => router.push(`/u/${author._id}`)}>@{author.username}</Typography>
             <Typography variant="h5" className="post-content">{content.length > 225 ? content.substring(0, 225) + "..." : content}</Typography>
             <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
-            {console.log(new Date())}
         </div>
     );
 }

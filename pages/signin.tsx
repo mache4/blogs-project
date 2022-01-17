@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Head from "next/head";
 import { useDispatch, useSelector } from "react-redux";
 import { signin } from "../redux/actions/auth";
 import { useRouter } from "next/router"
@@ -9,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Layout from "../components/layout";
+import ErrorModal from "../components/error-modal";
 
 const theme = createTheme({
     palette: {
@@ -32,29 +32,48 @@ export default function Signin() {
     const router = useRouter();
     const errorData = useSelector((state: any) => state.authReducer.error);
     const [error, setError] = useState("");
+    const [modal, setModal] = useState(false);
 
     const emailRef = useRef<any>();
     const passwordRef = useRef<any>();
 
     useEffect(() => {
-        if (errorData || errorData !== "")
+        if (errorData && errorData !== "") {
+            setModal(true);
+            animation();
             setError(errorData);
+        }
+
         else
             setError("");
     }, [errorData]);
 
+    const animation = () => {
+        setTimeout(() => {
+            setModal(false);
+        }, 2500);
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError("");
+        setModal(false);
 
-        if (!emailRef.current.value && !passwordRef.current.value)
-            return setError("Enter data");
-        if (!emailRef.current.value)
-            return setError("Enter email");
-        if (!passwordRef.current.value)
-            return setError("Enter password");
-        if (errorData || errorData !== "")
-            setError(errorData);
+        if (!emailRef.current.value && !passwordRef.current.value) {
+            setModal(true);
+            animation();
+            return setError("Enter data.");
+        }
+        if (!emailRef.current.value) {
+            setModal(true);
+            animation();
+            return setError("Enter email.");
+        }
+        if (!passwordRef.current.value) {
+            setModal(true);
+            animation();
+            return setError("Enter password.");
+        }
         dispatch(signin({
             email: emailRef.current.value,
             password: passwordRef.current.value
@@ -62,17 +81,17 @@ export default function Signin() {
     };
 
     return (
-        <Layout>
+        <Layout title="Sign in">
             <ThemeProvider theme={theme}>
+                <ErrorModal show={modal}>
+                    {error}
+                </ErrorModal>
                 <Container component="main" maxWidth="xs" sx={{
                     display: "flex",
                     height: "100vh",
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <Head>
-                        <title>Blogs | Sign in</title>
-                    </Head>
                     <CssBaseline />
                     <Box sx={{
                         marginTop: 8,
@@ -86,7 +105,6 @@ export default function Signin() {
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><LockOutlinedIcon /></Avatar>
                         <Typography component="h1" variant="h5">Sign in</Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                            {error}
                             <TextField
                                 inputRef={emailRef}
                                 margin="normal"

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NextPage } from "next";
+import ErrorIcon from '@mui/icons-material/Error';
 
 type Props = {
     children: any,
@@ -7,19 +8,12 @@ type Props = {
 }
 
 const ErrorModal: NextPage<Props> = ({ children, show }) => {
-    const [showModal, setShowModal] = useState(show);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setShowModal(false);
-        }, 3000);
-    }, []);
-
     return (
         <div className="error-modal" style={{
-            transform: showModal ? "translateX(0)" : "translateX(200%)"
+            transform: show ? "translateX(0)" : "translateX(200%)"
         }}>
-            {children}
+            <ErrorIcon />
+            <p className="error">{children}</p>
         </div>
     )
 }

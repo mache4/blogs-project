@@ -1,5 +1,5 @@
-import dbConnect from "../../lib/mongodb";
-import Post from "../../models/post";
+import dbConnect from "../../../lib/mongodb";
+import User from "../../../models/user";
 
 export default async function handler(req: any, res: any) {
     const { method } = req;
@@ -7,15 +7,16 @@ export default async function handler(req: any, res: any) {
     await dbConnect();
 
     switch (method) {
-        case "POST":
-            const { author, title, content, createdAt } = req.body;
+        case "GET":
+            const {
+                query: { id }
+            } = req;
 
             try {
-                const result = await Post.create({ author, title, content, createdAt });
-                res.status(201).json({ result });
+                const user = await User.find({ _id: id });
+                res.status(200).json(user);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
-                console.log(error);
             }
             break;
         default:

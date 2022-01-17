@@ -1,5 +1,5 @@
-import dbConnect from "../../lib/mongodb";
-import Post from "../../models/post";
+import dbConnect from "../../../lib/mongodb";
+import Post from "../../../models/post";
 
 export default async function handler(req: any, res: any) {
     const { method } = req;
@@ -8,11 +8,15 @@ export default async function handler(req: any, res: any) {
 
     switch (method) {
         case "GET":
+            const {
+                query: { id }
+            } = req;
+
             try {
-                const posts = await Post.find();
+                const posts = await Post.find({ _id: id });
                 res.status(200).json(posts);
             } catch (error) {
-                res.status(404).json({ message: "Something went wrong" });
+                res.status(404).json({ message: "Something went wrong." });
             }
             break;
         default:

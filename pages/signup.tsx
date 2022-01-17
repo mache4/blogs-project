@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Head from "next/head";
 import { signup } from "../redux/actions/auth";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Layout from "../components/layout";
+import ErrorModal from "../components/error-modal";
 
 const theme = createTheme({
     palette: {
@@ -38,10 +38,14 @@ export default function Signup() {
     const emailRef = useRef<any>();
     const usernameRef = useRef<any>();
     const passwordRef = useRef<any>();
+    const [modal, setModal] = useState(false);
 
     useEffect(() => {
-        if (errorData || errorData !== "")
+        if (errorData && errorData !== "") {
+            setModal(true);
+            animation();
             setError(errorData);
+        }
         else
             setError("");
     }, [errorData]);
@@ -53,22 +57,41 @@ export default function Signup() {
         return false;
     }
 
+    const animation = () => {
+        setTimeout(() => {
+            setModal(false);
+        }, 2500);
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError("");
 
-        if (!emailRef.current.value || !passwordRef.current.value || !firstNameRef.current.value || !lastNameRef.current.value || !usernameRef.current.value)
-            return setError("Enter data");
-        if (!validateEmail(emailRef.current.value))
-            return setError("Email is not valid");
-        if (passwordRef.current.value.length < 8)
+        if (!emailRef.current.value || !passwordRef.current.value || !firstNameRef.current.value || !lastNameRef.current.value || !usernameRef.current.value) {
+            setModal(true);
+            animation();
+            return setError("Enter data.");
+        }
+        if (!validateEmail(emailRef.current.value)) {
+            setModal(true);
+            animation();
+            return setError("Email is not valid.");
+        }
+        if (passwordRef.current.value.length < 8) {
+            setModal(true);
+            animation();
             return setError("Password must have at least 8 characters.");
-        if (usernameRef.current.value.length < 4)
+        }
+        if (usernameRef.current.value.length < 4) {
+            setModal(true);
+            animation();
             return setError("Username must have at least 4 characters.");
-        if (usernameRef.current.value.length > 16)
+        }
+        if (usernameRef.current.value.length > 16) {
+            setModal(true);
+            animation();
             return setError("Username mustn't have more than 16 characters.");
-        if (errorData || errorData !== "")
-            setError(errorData);
+        }
         dispatch(signup({
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
@@ -80,8 +103,11 @@ export default function Signup() {
     };
 
     return (
-        <Layout>
+        <Layout title="Sign up">
             <ThemeProvider theme={theme}>
+                <ErrorModal show={modal}>
+                    {error}
+                </ErrorModal>
                 <Container component="main" maxWidth="xs" sx={{
                     display: "flex",
                     height: "100vh",
@@ -102,10 +128,6 @@ export default function Signup() {
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><LockOutlinedIcon /></Avatar>
                         <Typography component="h1" variant="h5">Sign up</Typography>
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            {error}
-                            <Head>
-                                <title>Blogs | Sign up</title>
-                            </Head>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField

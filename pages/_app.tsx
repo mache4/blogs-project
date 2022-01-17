@@ -3,6 +3,9 @@ import "../styles/home.scss";
 import "../styles/create-post.scss";
 import "../styles/posts.scss";
 import "../styles/error-modal.scss";
+import "../styles/profile.scss";
+import "../styles/user-profile.scss";
+
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import store from "../redux/store";

@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useState } from "react";
 import Posts from '../components/posts';
 import Layout from '../components/layout';
@@ -29,11 +28,8 @@ const Home: NextPage = () => {
     const [createPost, setCreatePost] = useState(false);
 
     return (
-        <Layout>
+        <Layout title="Home">
             <div className="home">
-                <Head>
-                    <title>Blogs | Home</title>
-                </Head>
                 <CreatePost show={createPost} hide={() => setCreatePost(false)} />
                 <ThemeProvider theme={theme}>
                     <Button

@@ -39,27 +39,53 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
     const [error, setError] = useState("");
     const [modal, setModal] = useState(false);
 
+    const animation = () => {
+        setTimeout(() => {
+            setModal(false);
+        }, 2500);
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setError("");
-        if ((!titleRef.current.value || titleRef.current.value === "") && (!contentRef.current.value || contentRef.current.value === ""))
+
+        if ((!titleRef.current.value || titleRef.current.value === "") && (!contentRef.current.value || contentRef.current.value === "")) {
+            setModal(true);
+            animation();
             return setError("Enter data.");
-        if (!titleRef.current.value || titleRef.current.value === "")
+        }
+        if (!titleRef.current.value || titleRef.current.value === "") {
+            setModal(true);
+            animation();
             return setError("Enter post title.");
-        if (!contentRef.current.value || contentRef.current.value === "")
+        }
+        if (!contentRef.current.value || contentRef.current.value === "") {
+            setModal(true);
+            animation();
             return setError("Enter post content.");
-        if (!userInfo?.email)
+        }
+        if (!userInfo?.email) {
+            setModal(true);
+            animation();
             return setError("You are not authenticated.");
-        if (titleRef.current.value.length > 70)
+        }
+        if (titleRef.current.value.length > 70) {
+            setModal(true);
+            animation();
             return setError("Title mustn't have more than 70 characters.");
-        if (contentRef.current.value.length > 2500)
+        }
+        if (contentRef.current.value.length > 2500) {
+            setModal(true);
+            animation();
             return setError("Title mustn't have more than 2500 characters.");
+        }
         dispatch(createPost({
             author: {
                 email: userInfo.email,
                 username: userInfo.username,
                 firstName: userInfo.firstName,
-                lastName: userInfo.lastName
+                lastName: userInfo.lastName,
+                _id: userInfo._id
             },
             title: titleRef.current.value,
             content: contentRef.current.value,
@@ -78,6 +104,10 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
             backgroundColor: "#F3E5F5"
         }}>
             <ThemeProvider theme={theme}>
+                <ErrorModal show={modal}>
+                    {error}
+                </ErrorModal>
+
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
                     <Box sx={{
@@ -90,9 +120,6 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
                         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}><DescriptionIcon /></Avatar>
                         <Typography component="h1" variant="h5">Create Post</Typography>
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                            <ErrorModal show={error && error !== "" ? true : false}>
-                                {error}
-                            </ErrorModal>
                             <TextField
                                 inputRef={titleRef}
                                 margin="normal"

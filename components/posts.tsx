@@ -21,6 +21,7 @@ export default function Posts() {
             {postsData && postsData.length !== 0 ? postsData.map((post: any) => (
                 <Post
                     key={post._id}
+                    id={post._id}
                     author={post.author}
                     title={post.title}
                     content={post.content}

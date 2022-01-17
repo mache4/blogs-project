@@ -16,10 +16,10 @@ export default async function handler(req: any, res: any) {
             try {
                 let oldUser = await User.findOne({ email });
 
-                if (oldUser) return res.status(400).json({ message: "Email already exists" });
+                if (oldUser) return res.status(400).json({ message: "Email already exists." });
 
                 oldUser = await User.findOne({ username });
-                if (oldUser) return res.status(400).json({ message: "Username is already taken" });
+                if (oldUser) return res.status(400).json({ message: "Username is already taken." });
 
                 const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -29,7 +29,7 @@ export default async function handler(req: any, res: any) {
 
                 res.status(201).json({ result, token });
             } catch (error) {
-                res.status(500).json({ message: "Something went wrong" });
+                res.status(500).json({ message: "Something went wrong." });
 
                 console.log(error);
             }

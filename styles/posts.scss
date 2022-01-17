@@ -21,8 +21,24 @@
         width: 50%;
         background-color: #fff;
 
+        .post-title {
+            display: inline-block;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
         .post-author {
             color: #777;
+
+            // display: inline-block;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
 
         .post-content {
