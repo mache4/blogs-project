@@ -31,13 +31,14 @@
         }
 
         .post-author {
-            color: #777;
+            span {
+                color: #777;
 
-            // display: inline-block;
-            cursor: pointer;
+                cursor: pointer;
 
-            &:hover {
-                text-decoration: underline;
+                &:hover {
+                    text-decoration: underline;
+                }
             }
         }
 

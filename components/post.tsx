@@ -34,7 +34,7 @@ const Post: NextPage<Props> = ({ id, author, title, content, createdAt }) => {
     return (
         <div className="post">
             <Typography variant="h4" className="post-title" onClick={() => router.push(`/p/${id}`)}>{title}</Typography>
-            <Typography variant="h6" className="post-author" onClick={() => router.push(`/u/${author._id}`)}>@{author.username}</Typography>
+            <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${author._id}`)}>@{author.username}</span></Typography>
             <Typography variant="h5" className="post-content">{content.length > 225 ? content.substring(0, 225) + "..." : content}</Typography>
             <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
         </div>

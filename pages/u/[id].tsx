@@ -10,7 +10,8 @@ type Props = {
     lastName: string
 }
 
-const API = axios.create({ baseURL: 'http://localhost:3000/api' }); // ne razumem zasto mora http://localhost:3000
+// ne razumem zasto mora http://localhost:3000 (vljd zato sto nije u root-u nego je kao subroute) (koje sranje)
+const API = axios.create({ baseURL: 'http://localhost:3000/api' });
 
 export const getStaticPaths = async () => {
     const result = await API.get("/users");

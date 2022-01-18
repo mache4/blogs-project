@@ -101,6 +101,7 @@ const Navbar: NextPage = () => {
                                     vertical: 'top',
                                     horizontal: 'right',
                                 }}
+                                disableScrollLock={true}
                                 keepMounted
                                 transformOrigin={{
                                     vertical: 'top',

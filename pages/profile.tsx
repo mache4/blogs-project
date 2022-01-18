@@ -4,7 +4,7 @@ import Layout from '../components/layout';
 import { useSelector } from 'react-redux';
 
 export default function Profile() {
-    const userData = useSelector((state: any) => state.authReducer.authData.result);
+    const userData = useSelector((state: any) => state.authReducer.authData?.result);
 
     return (
         <Layout title="Profile">
@@ -23,10 +23,7 @@ export default function Profile() {
                             height={250}
                             width={250}
                             alt="profile-picture" />
-                        {/* <p>First Name: <span>{userData.firstName}</span></p>
-                            <p>Last Name: <span>{userData.lastName}</span></p>
-                            <p>Email: <span>{userData.email}</span></p>
-                            <p>Username: <span>{userData.username}</span></p> */}
+
                         <table className="user-data">
                             <tr>
                                 <td>First Name</td>
