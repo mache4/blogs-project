@@ -1,3 +1,25 @@
 .user-profile {
     margin-top: 75px;
+
+    .user-info {
+        text-align: center;
+        padding: 25px;
+        color: #fff;
+
+        .user-username {
+            font-size: 3rem;
+        }
+
+        .user-name {
+            font-size: 1.25rem;
+        }
+    }
+
+    .user-posts {
+        .post {
+            .post-author {
+                display: none;
+            }
+        }
+    }
 }

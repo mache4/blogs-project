@@ -5,6 +5,8 @@ import "../styles/posts.scss";
 import "../styles/error-modal.scss";
 import "../styles/profile.scss";
 import "../styles/user-profile.scss";
+import "../styles/post-modal.scss";
+import "../styles/overlay.scss";
 
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";

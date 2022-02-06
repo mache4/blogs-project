@@ -1,6 +1,6 @@
-import { GET_POSTS, CREATE_POST } from "../../constants/actionTypes";
+import { GET_POSTS } from "../../constants/actionTypes";
 
-export default function authReducer(state = {}, action: any) {
+export default function postsReducer(state = {}, action: any) {
     switch (action.type) {
         case GET_POSTS:
             return { ...state, postsData: action.data, error: action.error };
