@@ -11,7 +11,7 @@ API.interceptors.request.use((req: any) => {
 
 const posts = () => API.get("/posts");
 const post = (postData: any) => API.post("/post", postData);
-export const userPosts = (id: any) => API.get(`/user/${id}/posts`);
+export const userPosts = (id: any) => API.get(`/users/${id}/posts`);
 
 export const createPost = (postData: any) => async (dispatch: any) => {
     try {

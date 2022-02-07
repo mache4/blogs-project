@@ -34,7 +34,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (context: any) => {
     const id = context.params.id;
     const result = await API.get(`/users/${id}`);
-    const posts = await API.get(`/user/${id}/posts`);
+    const posts = await API.get(`/users/${id}/posts`);
     return {
         props: {
             email: result.data[0].email,
@@ -58,22 +58,20 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
                 </div>
                 <div className="user-posts posts">
                     {posts ? posts.length !== 0 ? posts.map((post: any) => (
-                        [
+                        <div className="container" key={post._id}>
                             <Post
-                                key={post._id}
                                 author={post.author}
                                 id={post._id}
                                 title={post.title}
                                 content={post.content}
-                                createdAt={post.createdAt} />,
+                                createdAt={post.createdAt} />
                             <PostModal
-                                key={post._id}
                                 show={modal}
                                 close={() => setModal(false)}
                                 author={post.author}
                                 title={post.title}
                                 content={post.content} />
-                        ]
+                        </div>
                     )) : <h1 style={{ color: "#fff", fontWeight: "400" }}>This user has no posts yet...</h1> : <Loader
                         type="Oval"
                         color="#fff"

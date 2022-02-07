@@ -1,10 +1,11 @@
 .profile {
     display: flex;
     justify-content: space-around;
-    // align-items: center;
+    align-items: center;
     text-align: center;
     width: 100%;
     height: 100vh;
+    padding: 75px 50px 0;
 
 
     .user-info {
@@ -15,13 +16,12 @@
         }
 
         .data {
-            position: fixed;
-            top: 50%;
-            left: 25%;
-            transform: translate(-50%, -50%);
+            width: 450px;
+            margin: 0 auto;
             padding: 25px;
             border-radius: 5px;
             background-color: #fff;
+            overflow: auto;
 
             .user-data {
                 margin-top: 15px;
@@ -36,23 +36,83 @@
                 }
 
                 tr:nth-child(even) {
-                    background-color: #dddddd;
+                    background-color: #ddd;
                 }
             }
         }
     }
 
     .user-posts {
-        .title {
-            margin-top: 75px;
+        width: 50%;
+        overflow: auto;
+        max-height: 75vh;
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            .post {
+                width: 75%;
+
+                .post-author {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1300px) {
+    .profile {
+        .user-posts {
+            .container {
+                .post {
+                    width: 95%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1150px) {
+    .profile {
+        display: block;
+        height: inherit;
+        width: inherit;
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
+
+        .user-info {
+            width: 100%;
+            margin: 25px 0 50px;
         }
 
-        width: 50%;
-        margin: 45px 0;
+        .user-posts {
+            width: 100%;
+            max-height: none;
+            overflow: hidden;
 
-        .post {
-            .post-author {
-                display: none;
+            .container {
+
+                .post {}
+            }
+        }
+    }
+}
+
+@media (max-width: 500px) {
+    .profile {
+        .user-info {
+            .data {
+                width: 95%;
+
+                .user-data {
+                    tr>td {
+                        font-size: 1.25rem;
+                    }
+                }
             }
         }
     }

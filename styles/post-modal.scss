@@ -8,11 +8,53 @@
     transition: transform 0.3s ease;
     background-color: #fff;
     z-index: 150;
+    min-width: 50%;
 
     .close-modal-btn {
         position: absolute;
         top: 25px;
         right: 25px;
         cursor: pointer;
+    }
+
+    .post-modal-title {
+        display: inline-block;
+        cursor: default;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .post-modal-author {
+        span {
+            color: #777;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .post-modal-content {
+        margin: 25px 0;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #ccc;
+        max-height: 50vh;
+        line-height: 28px;
+        overflow: auto;
+    }
+}
+
+@media (max-width: 1250px) {
+    .post-modal {
+        min-width: 65%;
+    }
+}
+
+@media (max-width: 800px) {
+    .post-modal {
+        min-width: 90%;
     }
 }

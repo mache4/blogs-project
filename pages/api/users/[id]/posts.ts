@@ -14,8 +14,6 @@ export default async function handler(req: any, res: any) {
 
             try {
                 const posts = await Post.find({ 'author._id': id });
-                // {'local.rooms': {$elemMatch: {name: req.body.username}}}
-                console.log(id)
                 res.status(200).json(posts);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });

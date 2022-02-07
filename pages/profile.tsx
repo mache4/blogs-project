@@ -39,45 +39,45 @@ export default function Profile() {
                                 alt="profile-picture" />
 
                             <table className="user-data">
-                                <tr>
-                                    <td>First Name</td>
-                                    <td>{userData.firstName}</td>
-                                </tr>
-                                <tr>
-                                    <td>Last Name</td>
-                                    <td>{userData.lastName}</td>
-                                </tr>
-                                <tr>
-                                    <td>Email</td>
-                                    <td>{userData.email}</td>
-                                </tr>
-                                <tr>
-                                    <td>Username</td>
-                                    <td>{userData.username}</td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>First Name</td>
+                                        <td>{userData.firstName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name</td>
+                                        <td>{userData.lastName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>{userData.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Username</td>
+                                        <td>{userData.username}</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                     <div className="user-posts posts">
-                        <p className="title">Your Posts</p>
-                        {userPostsData ? userPostsData.length !== 0 ? userPostsData.map((post: any) => {
-                            return [
+                        {/* <p className="title">Your Posts</p> */}
+                        {userPostsData ? userPostsData.length !== 0 ? userPostsData.map((post: any) => (
+                            <div className="container" key={post._id}>
                                 <Post
-                                    key={post._id}
                                     author={post.author}
                                     id={post._id}
                                     title={post.title}
                                     content={post.content}
-                                    createdAt={post.createdAt} />,
+                                    createdAt={post.createdAt} />
                                 <PostModal
-                                    key={post._id}
                                     show={modal}
                                     close={() => setModal(false)}
                                     author={post.author}
                                     title={post.title}
                                     content={post.content} />
-                            ];
-                        }) : <h1 style={{ color: "#fff", fontWeight: "400" }}>You have no posts yet...</h1> : <Loader
+                            </div>
+                        )) : <h1 style={{ color: "#fff", fontWeight: "400" }}>You have no posts yet...</h1> : <Loader
                             type="Oval"
                             color="#fff"
                             height={100}

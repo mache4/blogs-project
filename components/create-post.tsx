@@ -77,7 +77,7 @@ const CreatePost: NextPage<Props> = ({ show, hide }) => {
         if (contentRef.current.value.length > 2500) {
             setModal(true);
             animation();
-            return setError("Title mustn't have more than 2500 characters.");
+            return setError("Content mustn't have more than 2500 characters.");
         }
         dispatch(createPost({
             author: {
