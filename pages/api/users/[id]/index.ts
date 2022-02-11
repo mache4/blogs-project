@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
             } = req;
 
             try {
-                const user = await User.find({ _id: id });
+                const user = await getUserById(id);
                 res.status(200).json(user);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
@@ -23,4 +23,9 @@ export default async function handler(req: any, res: any) {
             res.status(400).json({ success: false });
             break;
     }
+}
+
+export const getUserById = async (id: any) => {
+    const user = await User.find({ _id: id });
+    return user;
 }

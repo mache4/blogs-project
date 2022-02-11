@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import axios from "axios";
 import Layout from '../../components/layout';
 import { NextPage } from 'next';
 import Post from "../../components/post";
 import Loader from 'react-loader-spinner';
+import { getUsers } from '../api/users';
+import { getUserById } from '../api/users/[id]';
+import { getUsersPosts } from '../api/users/[id]/posts';
 
 import PostModal from "../../components/post-modal";
 import Overlay from "../../components/overlay";
@@ -16,13 +18,8 @@ type Props = {
     posts: Array<object>
 }
 
-const API = axios.create({ baseURL: "/api" });
-
-// ovde menjati url: https://blogs-project-nextjs.vercel.app/api
-// ovde menjati url: http://localhost:3000/api
-
 export const getStaticPaths = async () => {
-    const result = await API.get("/users");
+    const result: any = await getUsers();
 
     const paths = result.data.map((i: any) => {
         return { params: { id: i._id.toString() } };
@@ -36,8 +33,9 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: any) => {
     const id = context.params.id;
-    const result = await API.get(`/users/${id}`);
-    const posts = await API.get(`/users/${id}/posts`);
+    const result: any = await getUserById(id);
+    const posts: any = await getUsersPosts(id);
+
     return {
         props: {
             email: result.data[0].email,

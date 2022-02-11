@@ -13,7 +13,7 @@ export default async function handler(req: any, res: any) {
             } = req;
 
             try {
-                const posts = await Post.find({ 'author._id': id });
+                const posts = await getUsersPosts(id);
                 res.status(200).json(posts);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
@@ -23,4 +23,9 @@ export default async function handler(req: any, res: any) {
             res.status(400).json({ success: false });
             break;
     }
+}
+
+export const getUsersPosts = async (id: any) => {
+    const posts = await Post.find({ 'author._id': id });
+    return posts;
 }

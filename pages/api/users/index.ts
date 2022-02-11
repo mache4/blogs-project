@@ -9,7 +9,7 @@ export default async function handler(req: any, res: any) {
     switch (method) {
         case "GET":
             try {
-                const posts = await User.find();
+                const posts = await getUsers();
                 res.status(200).json(posts);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
@@ -19,4 +19,9 @@ export default async function handler(req: any, res: any) {
             res.status(400).json({ success: false });
             break;
     }
+}
+
+export const getUsers = async () => {
+    const posts = await User.find();
+    return posts;
 }
