@@ -13,7 +13,8 @@ export default async function handler(req: any, res: any) {
             } = req;
 
             try {
-                const user = await getUserById(id);
+                // const user = await getUserById(id);
+                const user = await User.find({ _id: id });
                 res.status(200).json(user);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
@@ -25,7 +26,7 @@ export default async function handler(req: any, res: any) {
     }
 }
 
-export const getUserById = async (id: any) => {
-    const user = await User.find({ _id: id });
-    return user;
-}
+// export const getUserById = async (id: any) => {
+//     const user = await User.find({ _id: id });
+//     return user;
+// }

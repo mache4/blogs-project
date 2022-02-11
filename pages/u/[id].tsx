@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Layout from '../../components/layout';
 import { NextPage } from 'next';
-import Post from "../../components/post";
+import { Typography } from '@mui/material';
+
+import dbConnect from '../../lib/mongodb';
+import Post from '../../models/post';
+import Userr from '../../models/user';
 import Loader from 'react-loader-spinner';
-import { getUsers } from '../api/users';
-import { getUserById } from '../api/users/[id]';
-import { getUsersPosts } from '../api/users/[id]/posts';
+import { useRouter } from 'next/router';
 
 import PostModal from "../../components/post-modal";
 import Overlay from "../../components/overlay";
@@ -15,13 +17,15 @@ type Props = {
     username: string,
     firstName: string,
     lastName: string,
-    posts: Array<object>
+    posts: any
 }
 
-export const getStaticPaths = async () => {
-    const result: any = await getUsers();
 
-    const paths = result.data.map((i: any) => {
+export const getStaticPaths = async () => {
+    dbConnect();
+    const result: any = await Userr.find();
+
+    const paths = result.map((i: any) => {
         return { params: { id: i._id.toString() } };
     });
 
@@ -32,23 +36,31 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async (context: any) => {
+    dbConnect();
     const id = context.params.id;
-    const result: any = await getUserById(id);
-    const posts: any = await getUsersPosts(id);
+    const result = await Userr.find({ _id: id });
+    let posts: any = await Post.find({ 'author._id': id });
 
     return {
         props: {
-            email: result.data[0].email,
-            username: result.data[0].username,
-            firstName: result.data[0].firstName,
-            lastName: result.data[0].lastName,
-            posts: posts.data.reverse()
+            email: result[0].email,
+            username: result[0].username,
+            firstName: result[0].firstName,
+            lastName: result[0].lastName,
+            posts: JSON.stringify(posts)
         }
     };
 };
 
 const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) => {
     const [modal, setModal] = useState(false);
+    const router = useRouter();
+
+    const fun = (number: any) => {
+        if (number < 10)
+            number = '0' + number;
+        return number;
+    }
 
     return (
         <Layout title={`@${username}`}>
@@ -58,22 +70,30 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
                     <p className="user-name">{firstName} {lastName}</p>
                 </div>
                 <div className="user-posts posts">
-                    {posts ? posts.length !== 0 ? posts.map((post: any) => (
-                        <div className="container" key={post._id}>
-                            <Post
-                                author={post.author}
-                                id={post._id}
-                                title={post.title}
-                                content={post.content}
-                                createdAt={post.createdAt} />
+                    {posts ? posts?.length !== 0 ? JSON.parse(posts)?.map((p: any) => {
+                        let date = new Date(p?.createdAt);
+                        let minutes = fun(date.getMinutes());
+                        let hours = fun(date.getHours());
+                        let day = fun(date.getDate());
+                        let month = fun(date.getMonth() + 1);
+                        let year = fun(date.getFullYear());
+
+                        return <div className="container" key={p?._id.toString()}>
+                            <div className="post">
+                                <Typography variant="h4" className="post-title" onClick={() => setModal(true)}>{p?.title}</Typography>
+                                <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${p?.author?._id}`)}>@{p?.author?.username}</span></Typography>
+                                <Typography variant="h5" className="post-content">{p?.content.length > 225 ? p?.content.substring(0, 225) + "..." : p?.content}</Typography>
+                                <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
+                                <Overlay show={modal} clicked={() => setModal(false)} />
+                            </div>
                             <PostModal
                                 show={modal}
                                 close={() => setModal(false)}
-                                author={post.author}
-                                title={post.title}
-                                content={post.content} />
+                                author={p?.author}
+                                title={p?.title}
+                                content={p?.content} />
                         </div>
-                    )) : <h1 style={{ color: "#fff", fontWeight: "400" }}>This user has no posts yet...</h1> : <Loader
+                    }) : <h1 style={{ color: "#fff", fontWeight: "400" }}>This user has no posts yet...</h1> : <Loader
                         type="Oval"
                         color="#fff"
                         height={100}

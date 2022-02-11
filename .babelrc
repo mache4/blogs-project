@@ -1,0 +1,15 @@
+{
+    "presets": [
+        "next/babel"
+    ],
+    "plugins": [
+        [
+            "superjson-next",
+            {
+                "exclude": [
+                    "someProp"
+                ]
+            }
+        ]
+    ]
+}

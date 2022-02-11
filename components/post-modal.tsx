@@ -6,7 +6,7 @@ import { Close } from '@mui/icons-material';
 type Props = {
     show: boolean,
     close: any,
-    author: any,
+    author?: any,
     title: string,
     content: string
 }

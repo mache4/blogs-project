@@ -13,7 +13,8 @@ export default async function handler(req: any, res: any) {
             } = req;
 
             try {
-                const posts = await getUsersPosts(id);
+                // const posts = await getUsersPosts(id);
+                const posts = await Post.find({ 'author._id': id });
                 res.status(200).json(posts);
             } catch (error) {
                 res.status(404).json({ message: "Something went wrong." });
@@ -26,6 +27,7 @@ export default async function handler(req: any, res: any) {
 }
 
 export const getUsersPosts = async (id: any) => {
+    dbConnect();
     const posts = await Post.find({ 'author._id': id });
     return posts;
 }

@@ -11,10 +11,14 @@ async function dbConnect() {
     }
 
     if (!cached.promise) {
-        cached.promise = mongoose.connect(`${process.env.MONGODB_URI}`).then(mongoose => {
-            console.log("MongoDB connected.");
-            return mongoose;
-        });
+        cached.promise = mongoose.connect(`${process.env.MONGODB_URI}`)
+            .then(mongoose => {
+                console.log("MongoDB connected.");
+                return mongoose;
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
     cached.conn = await cached.promise;
     return cached.conn;

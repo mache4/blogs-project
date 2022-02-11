@@ -6,18 +6,14 @@ import PostModal from "../components/post-modal";
 import Overlay from './overlay';
 
 type Props = {
-    author: {
-        email: string,
-        username: string,
-        _id: string
-    },
-    id: string,
-    title: string,
-    content: string,
-    createdAt: any
+    author: any,
+    id?: any,
+    title: any,
+    content: any,
+    createdAt?: any
 }
 
-const Post: NextPage<Props> = ({ id, author, title, content, createdAt }) => {
+const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
     const router = useRouter();
     const [modal, setModal] = useState(false);
 
@@ -37,7 +33,7 @@ const Post: NextPage<Props> = ({ id, author, title, content, createdAt }) => {
     return (
         <div className="post">
             <Typography variant="h4" className="post-title" onClick={() => setModal(true)}>{title}</Typography>
-            <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${author._id}`)}>@{author.username}</span></Typography>
+            <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${author?._id}`)}>@{author?.username}</span></Typography>
             <Typography variant="h5" className="post-content">{content.length > 225 ? content.substring(0, 225) + "..." : content}</Typography>
             <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
 
