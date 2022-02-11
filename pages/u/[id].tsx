@@ -16,7 +16,7 @@ type Props = {
     posts: Array<object>
 }
 
-const API = axios.create({ baseURL: "https://blogs-project-nextjs.vercel.app/api" });
+const API = axios.create({ baseURL: "/api" });
 
 // ovde menjati url: https://blogs-project-nextjs.vercel.app/api
 // ovde menjati url: http://localhost:3000/api
