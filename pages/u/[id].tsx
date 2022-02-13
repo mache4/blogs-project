@@ -84,7 +84,6 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
                                 <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${p?.author?._id}`)}>@{p?.author?.username}</span></Typography>
                                 <Typography variant="h5" className="post-content">{p?.content.length > 225 ? p?.content.substring(0, 225) + "..." : p?.content}</Typography>
                                 <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
-                                <Overlay show={modal} clicked={() => setModal(false)} />
                             </div>
                             <PostModal
                                 show={modal}

@@ -75,7 +75,7 @@ export default function Signin() {
             return setError("Enter password.");
         }
         dispatch(signin({
-            email: emailRef.current.value,
+            email: emailRef.current.value.trim(),
             password: passwordRef.current.value
         }, router));
     };

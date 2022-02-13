@@ -72,7 +72,7 @@ export default function Signup() {
             animation();
             return setError("Enter data.");
         }
-        if (!validateEmail(emailRef.current.value)) {
+        if (!validateEmail(emailRef.current.value.trim())) {
             setModal(true);
             animation();
             return setError("Email is not valid.");
@@ -96,7 +96,7 @@ export default function Signup() {
             firstName: firstNameRef.current.value,
             lastName: lastNameRef.current.value,
             username: usernameRef.current.value,
-            email: emailRef.current.value,
+            email: emailRef.current.value.trim(),
             password: passwordRef.current.value,
             createdAt: new Date()
         }, router));
