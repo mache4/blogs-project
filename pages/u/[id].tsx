@@ -55,7 +55,7 @@ export const getStaticProps = async (context: any) => {
 
 const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) => {
     const [modal, setModal] = useState(false);
-    const userData = useSelector((state: any) => state.authReducer.authData.result);
+    const userData = useSelector((state: any) => state.authReducer.authData?.result);
     const router = useRouter();
 
     const fun = (number: any) => {
@@ -65,7 +65,7 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
     }
 
     useEffect(() => {
-        if (username === userData.username) {
+        if (username === userData?.username) {
             router.push("/profile");
         }
     }, [username, userData, router]);
