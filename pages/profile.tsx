@@ -65,17 +65,11 @@ export default function Profile() {
                         {userPostsData ? userPostsData.length !== 0 ? userPostsData.map((post: any) => (
                             <div className="container" key={post._id}>
                                 <Post
-                                    author={post.author}
+                                    author={""}
                                     id={post._id}
                                     title={post.title}
                                     content={post.content}
                                     createdAt={post.createdAt} />
-                                <PostModal
-                                    show={modal}
-                                    close={() => setModal(false)}
-                                    author={post.author}
-                                    title={post.title}
-                                    content={post.content} />
                             </div>
                         )) : <h1 style={{ color: "#fff", fontWeight: "400" }}>You have no posts yet...</h1> : <Loader
                             type="Oval"

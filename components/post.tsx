@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { Typography } from '@mui/material';
+import { useSelector } from "react-redux";
 import PostModal from "../components/post-modal";
 import Overlay from './overlay';
 
@@ -15,6 +16,7 @@ type Props = {
 
 const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
     const router = useRouter();
+    const userData = useSelector((state: any) => state.authReducer.authData?.result);
     const [modal, setModal] = useState(false);
 
     const fun = (number: any) => {
@@ -33,7 +35,11 @@ const Post: NextPage<Props> = ({ author, title, content, createdAt }) => {
     return (
         <div className="post">
             <Typography variant="h4" className="post-title" onClick={() => setModal(true)}>{title}</Typography>
-            <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${author?._id}`)}>@{author?.username}</span></Typography>
+            {author === "" ? null : <Typography variant="h6" className="post-author"><span onClick={() => {
+                if (userData?._id === author?._id)
+                    return router.push("/profile");
+                return router.push(`/u/${author?._id}`);
+            }}>@{author?.username}</span></Typography>}
             <Typography variant="h5" className="post-content">{content.length > 225 ? content.substring(0, 225) + "..." : content}</Typography>
             <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
 

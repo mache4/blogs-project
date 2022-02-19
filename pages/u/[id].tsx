@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../components/layout';
 import { NextPage } from 'next';
 import { Typography } from '@mui/material';
@@ -8,6 +8,7 @@ import Post from '../../models/post';
 import Userr from '../../models/user';
 import Loader from 'react-loader-spinner';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 
 import PostModal from "../../components/post-modal";
 import Overlay from "../../components/overlay";
@@ -54,6 +55,7 @@ export const getStaticProps = async (context: any) => {
 
 const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) => {
     const [modal, setModal] = useState(false);
+    const userData = useSelector((state: any) => state.authReducer.authData.result);
     const router = useRouter();
 
     const fun = (number: any) => {
@@ -61,6 +63,12 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
             number = '0' + number;
         return number;
     }
+
+    useEffect(() => {
+        if (username === userData.username) {
+            router.push("/profile");
+        }
+    }, [username, userData, router]);
 
     return (
         <Layout title={`@${username}`}>
@@ -81,14 +89,13 @@ const User: NextPage<Props> = ({ email, username, firstName, lastName, posts }) 
                         return <div className="container" key={p?._id.toString()}>
                             <div className="post">
                                 <Typography variant="h4" className="post-title" onClick={() => setModal(true)}>{p?.title}</Typography>
-                                <Typography variant="h6" className="post-author"><span onClick={() => router.push(`/u/${p?.author?._id}`)}>@{p?.author?.username}</span></Typography>
                                 <Typography variant="h5" className="post-content">{p?.content.length > 225 ? p?.content.substring(0, 225) + "..." : p?.content}</Typography>
                                 <Typography variant="h6" className="post-date">{hours}:{minutes} | {day}.{month}.{year}</Typography>
                             </div>
                             <PostModal
                                 show={modal}
                                 close={() => setModal(false)}
-                                author={p?.author}
+                                author={""}
                                 title={p?.title}
                                 content={p?.content} />
                         </div>
